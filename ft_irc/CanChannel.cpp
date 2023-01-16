@@ -30,7 +30,7 @@ const std::map<int, CanClient*>& CanChannel::getClientList(void) const
 
 void CanChannel::addClientElement(const int fd, const CanClient *pNewClient)
 {
-	std::pair<iterator, bool> ret;
+	std::pair<std::string, bool>	ret;
 	ret = this->clientList.insert({fd, pNewClient});
 	if (ret.second == false)
 	{
@@ -43,7 +43,7 @@ void CanChannel::deleteClientElement(const int fd)
 	this->clientList.erase(fd); // erase Throw compare Error
 }
 
-virtual const char*	CanChannel::addClientException::what() const throw()
+const char*	CanChannel::addClientException::what() const throw()
 {
 	return "";
 }

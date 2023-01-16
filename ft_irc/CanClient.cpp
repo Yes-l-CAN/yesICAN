@@ -1,4 +1,6 @@
 #include "./include/CanClient.hpp"
+#include "CanChannel.hpp"
+#include <map>
 
 CanClient::CanClient()
 {
@@ -27,7 +29,6 @@ CanClient& CanClient::operator=(const CanClient& ref)
 
 CanClient::CanClient(const struct sockaddr_in addr) :addr(addr)
 {
-
 }
 
 void CanClient::setNickname(const std::string name)
@@ -58,5 +59,19 @@ void CanClient::setRealname(const std::string name)
 std::string CanClient::getRealname(void) const
 {
 	return (this->username);
+}
+
+void  CanClient::addChannelElement(const std::string key, const CanChannel *pNewChannel){
+	
+	this->channelList.insert(std::pair<std::string, CanChannel *>(key, pNewChannel));
+	if (ret.second == false)
+	{
+		throw (CanClient::addChannelException());
+	}
+}
+
+const char*	CanClient::addChannelException::what() const throw()
+{
+	return "";
 }
 

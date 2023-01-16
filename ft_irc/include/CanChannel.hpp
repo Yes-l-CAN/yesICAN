@@ -4,6 +4,7 @@
 #include <iostream>
 #include <exception>
 #include <map>
+#include <vector>
 #include "CanClient.hpp"
 
 class CanChannel
@@ -25,7 +26,7 @@ class CanChannel
     class addClientException: public std::exception
     {
         virtual const char*	what() const throw();
-    }
+    };
 
     // class deleteClientException: public std::exception
     // {

@@ -30,6 +30,8 @@
 class CanServer
 {
 private:
+	int			 port;
+	std::string	password;
 
 	int socketFd;
 	struct sockaddr_in addr;
@@ -47,6 +49,7 @@ public:
 	CanServer& operator=(const CanServer& obj);
 	~CanServer();
 	
+	void setServer(char	*port, char	*pw);
 	void s_On();
 	// void serverOff();
 	
@@ -80,6 +83,11 @@ public:
 	};
 
 	class acceptException: public std::exception
+	{
+		virtual const char* what() const throw();
+	};
+
+	class invalidPortException: public std::exception
 	{
 		virtual const char* what() const throw();
 	};
