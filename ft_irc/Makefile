@@ -2,13 +2,17 @@ NAME 		:= CanIRC
 SRCS 		:= 	main.cpp \
 				CanChannel.cpp \
 				CanClient.cpp \
-				CanCommand.cpp \
-				CanServer.cpp 
+				Operation.cpp \
+				CanServer.cpp \
+				Utility.cpp
 				
-INCLUDES	:= CanChannel.hpp \
-				CanClient.hpp \
-				CanCommand.hpp \
-				CanServer.hpp 
+INCLUDES_DIR := ./include
+
+INCLUDES	:= 	$(INCLUDES_DIR)/CanChannel.hpp \
+				$(INCLUDES_DIR)/CanClient.hpp \
+				$(INCLUDES_DIR)/Operation.hpp \
+				$(INCLUDES_DIR)/CanServer.hpp \
+				$(INCLUDES_DIR)/Utility.hpp
 
 CXX 		:= c++
 CXXFLAGS	:= -Wall -Wextra -Werror -std=c++98

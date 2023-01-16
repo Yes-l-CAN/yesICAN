@@ -1,6 +1,7 @@
 #include "./include/CanClient.hpp"
 #include "CanChannel.hpp"
 #include <map>
+#include <utility>
 
 CanClient::CanClient()
 {
@@ -61,10 +62,10 @@ std::string CanClient::getRealname(void) const
 	return (this->username);
 }
 
-void  CanClient::addChannelElement(const std::string key, const CanChannel *pNewChannel){
+void  CanClient::addChannelElement(std::string key, CanChannel *pNewChannel){
 	
-	this->channelList.insert(std::pair<std::string, CanChannel *>(key, pNewChannel));
-	if (ret.second == false)
+	// if (ret.second == false)
+	if (this->channelList.insert(std::make_pair(key, pNewChannel)).second == false)
 	{
 		throw (CanClient::addChannelException());
 	}

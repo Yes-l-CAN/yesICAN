@@ -6,6 +6,8 @@
 #include <netinet/in.h>
 #include <netinet/ip.h>
 
+class CanChannel;
+
 class CanClient
 {
 	private:
@@ -33,7 +35,7 @@ class CanClient
 		std::string getUsername(void) const;
 		std::string getRealname(void) const;
 
-		void addChannelElement(const std::string key, const CanChannel *pNewChannel);
+		void addChannelElement(std::string key, CanChannel *pNewChannel);
 
 		void cSend(int fd);
 

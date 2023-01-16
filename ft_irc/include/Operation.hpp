@@ -1,12 +1,13 @@
-#ifndef CAN_COMMAND_HPP
-#define CAN_COMMAND_HPP
+#ifndef OPERATION_HPP
+#define OPERATION_HPP
 
+#include "CanServer.hpp"
 
 #define SUCCESS 1
 #define FAIL  0
 #define ERROR   -1
 
-class CanCommand{
+class Operation{
 
     private:
         int     result;
@@ -14,13 +15,14 @@ class CanCommand{
     protected:
 		int		bufferSize = 300;
 		char	buffer[bufferSize];
-	public:
 
     public:
-        CanCommand();
-        // CanCommand(const CanCommand& obj);
-        // CanCommand& operator=(const CanCommand& obj);
-        ~CanCommand();
+        CanServer   *server;
+        
+        Operation();
+        // Operation(const Operation& obj);
+        // Operation& operator=(const Operation& obj);
+        ~Operation();
 
 		void cRecv(int fd);
 		void Client2ServSend(int fd);
@@ -39,7 +41,7 @@ class CanCommand{
         
         
         class recvException : public std::exception{
-            virtual const char* what() const throw()
+            virtual const char* what() const throw();
         };
 };
 
