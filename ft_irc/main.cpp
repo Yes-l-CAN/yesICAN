@@ -1,7 +1,7 @@
 #include "./include/CanClient.hpp"
 #include "./include/CanServer.hpp"
 #include "./include/CanChannel.hpp"
-#include "./include/CanCommand.hpp"
+#include "./include/Operation.hpp"
 #include "./include/Utility.hpp"
 
 int main(int argc, char* argv[]){

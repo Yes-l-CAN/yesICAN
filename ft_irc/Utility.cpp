@@ -1,4 +1,4 @@
-#include "../Utility.hpp"
+#include "./include/Utility.hpp"
 
 std::vector<std::string> Utility::splitArr(std::string& str)
 {

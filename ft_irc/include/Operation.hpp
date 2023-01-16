@@ -39,7 +39,6 @@ class Operation{
         void    Notice(std::vector<std::string> argv);
         void    PrivateMSG(std::vector<std::string> argv);                 
         
-        
         class recvException : public std::exception{
             virtual const char* what() const throw();
         };

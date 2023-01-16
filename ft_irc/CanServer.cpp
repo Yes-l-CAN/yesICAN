@@ -135,6 +135,7 @@ void CanServer::s_Accept()
 	struct sockaddr_in clientAddr;
 	unsigned int size = sizeof(clientAddr);
 
+	
 	clientSockFd = accept(this->socketFd, (struct sockaddr*)&clientAddr, &size);
 	if (clientSockFd < 0)
 	{
