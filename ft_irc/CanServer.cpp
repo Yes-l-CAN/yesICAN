@@ -1,4 +1,4 @@
-#include "./include/CanServer.hpp"
+#include "CanServer.hpp"
 
 CanServer::CanServer() : socketFd(-1), maxFd(0)
 {

@@ -1,7 +1,7 @@
 #include "Operation.hpp"
 
-Operation::Operation(){
-
+Operation::Operation()
+{
 }
 
 // Operation::Operation(const Operation& obj) {
@@ -15,7 +15,6 @@ Operation::Operation(){
 // 	return *this;
 // }
 
-Operation::~Operation(){
-
+Operation::~Operation()
+{
 }
-

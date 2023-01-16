@@ -1,48 +1,49 @@
 #ifndef CAN_CLIENT_HPP
 #define CAN_CLIENT_HPP
 
-#include <string>
-#include <sys/socket.h>
+#include <map>
 #include <netinet/in.h>
 #include <netinet/ip.h>
+#include <string>
+#include <sys/socket.h>
 
 class CanChannel;
 
 class CanClient
 {
-	private:
-		std::string nickname;
-		std::string username;
-		std::string	realname;
-		struct sockaddr_in addr;
-		
-		std::map<std::string, CanChannel*>	channelList;
+private:
+    std::string nickname;
+    std::string username;
+    std::string realname;
+    struct sockaddr_in addr;
 
-	public:
-		CanClient();
-		CanClient(const CanClient& ref);
-		CanClient(const struct sockaddr_in addr);
-		CanClient& operator=(const CanClient& ref);
-		~CanClient();
+    std::map<std::string, CanChannel*> channelList;
 
-		// setter
-		void setNickname(const std::string name);
-		void setUsername(const std::string name);
-		void setRealname(const std::string name);
+public:
+    CanClient();
+    CanClient(const CanClient& ref);
+    CanClient(const struct sockaddr_in addr);
+    CanClient& operator=(const CanClient& ref);
+    ~CanClient();
 
-		// getter
-		std::string getNickname(void) const;
-		std::string getUsername(void) const;
-		std::string getRealname(void) const;
+    // setter
+    void setNickname(const std::string name);
+    void setUsername(const std::string name);
+    void setRealname(const std::string name);
 
-		void addChannelElement(std::string key, CanChannel *pNewChannel);
+    // getter
+    std::string getNickname(void) const;
+    std::string getUsername(void) const;
+    std::string getRealname(void) const;
 
-		void cSend(int fd);
+    void addChannelElement(std::string key, CanChannel* pNewChannel);
 
-		class addChannelException: public std::exception{
-			virtual const char*	what() const throw();
-		};
+    void cSend(int fd);
 
+    class addChannelException : public std::exception
+    {
+        virtual const char* what() const throw();
+    };
 };
 
 #endif

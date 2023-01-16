@@ -1,44 +1,42 @@
-NAME 		:= CanIRC
-SRCS 		:= 	main.cpp \
-				CanChannel.cpp \
-				CanClient.cpp \
-				Operation.cpp \
-				CanServer.cpp \
-				Utility.cpp
-				
-INCLUDES_DIR := ./include
+NAME 			:= CanIRC.out
+SRCS 			:= main.cpp \
+					CanChannel.cpp \
+					CanClient.cpp \
+					Operation.cpp \
+					CanServer.cpp \
+					Utility.cpp
 
-INCLUDES	:= 	$(INCLUDES_DIR)/CanChannel.hpp \
-				$(INCLUDES_DIR)/CanClient.hpp \
-				$(INCLUDES_DIR)/Operation.hpp \
-				$(INCLUDES_DIR)/CanServer.hpp \
-				$(INCLUDES_DIR)/Utility.hpp
+OBJ_DIR 		:= objs/
+OBJS 			:= $(addprefix $(OBJ_DIR), $(SRCS:.cpp=.o))
 
-CXX 		:= c++
-CXXFLAGS	:= -Wall -Wextra -Werror -std=c++98
-RM			:= rm -f
+CXX 			:= c++
+CXXFLAGS		:= -Wall -Wextra -Werror -std=c++98 -Iinclude
+RM				:= rm -f
 
-OBJS 		:= $(SRCS:.cpp=.o)
-
-$(NAME)		:	$(OBJS)
+$(NAME)			:	$(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
 
-%.o			: %.cpp $(INCLUDES)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(OBJ_DIR)		:
+	mkdir $@
+
+$(OBJ_DIR)%.o	:	%.cpp	|	$(OBJ_DIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@  -MMD -MF $(@:.o=.d) -MT $@ -MP
 
 # make commands
-.PHONY		:	all
-all			:	$(NAME)
+.PHONY			:	all
+all				:	$(NAME)
 
-.PHONY		:	clean
-clean		:
-	$(RM) $(OBJS)
+.PHONY			:	clean
+clean			:
+	$(RM) -r $(OBJ_DIR)
 
-.PHONY		:	fclean
-fclean		:	clean
+.PHONY			:	fclean
+fclean			:	clean
 	$(RM) $(NAME)
 
-.PHONY		:	re
-re			:
+.PHONY			:	re
+re				:
 	$(MAKE) fclean
 	$(MAKE) all
+
+-include $(OBJS:.o=.d)

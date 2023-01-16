@@ -1,23 +1,23 @@
 #ifndef CAN_SERVER_HPP
 #define CAN_SERVER_HPP
 
-#include <iostream>
-#include <cerrno>
-#include <string>
-#include <unistd.h>
-#include <sys/types.h>
 #include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/socket.h>
-#include <sys/wait.h>
-#include <sys/select.h>
-#include <fcntl.h>
+#include <cerrno>
 #include <cstdio>
 #include <cstdlib>
 #include <exception>
+#include <fcntl.h>
+#include <iostream>
+#include <netinet/in.h>
+#include <string>
+#include <sys/select.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
-#include <utility>
 #include <map>
+#include <utility>
 
 #include "CanClient.hpp"
 
@@ -26,74 +26,72 @@
 #define MAX_FD 1000
 #define MAXBUF 10
 
-
 class CanServer
 {
 private:
-	int			 port;
-	std::string	password;
+    int port;
+    std::string password;
 
-	int socketFd;
-	struct sockaddr_in addr;
+    int socketFd;
+    struct sockaddr_in addr;
 
-	fd_set reads;
-	fd_set copyReads;
+    fd_set reads;
+    fd_set copyReads;
 
-	int		maxFd;
-	
-	std::map<int, CanClient*>	clientList;
-	
+    int maxFd;
+
+    std::map<int, CanClient*> clientList;
+
 public:
-	CanServer();
-	CanServer(const CanServer& obj);
-	CanServer& operator=(const CanServer& obj);
-	~CanServer();
-	
-	void setServer(char	*port, char	*pw);
-	void s_On();
-	// void serverOff();
-	
-	void setServAddr();
-	void s_Socket();
-	void s_Bind();
-	void s_Listen();
-	void s_Select();
-	void s_Accept();
+    CanServer();
+    CanServer(const CanServer& obj);
+    CanServer& operator=(const CanServer& obj);
+    ~CanServer();
 
-	// utils
-	void setFdSet();
-	void findFd();
+    void setServer(char* port, char* pw);
+    void s_On();
+    // void serverOff();
 
-	class socketCreateException: public std::exception{
-		virtual const char*	what() const throw();
-	};
+    void setServAddr();
+    void s_Socket();
+    void s_Bind();
+    void s_Listen();
+    void s_Select();
+    void s_Accept();
 
-	class bindException: public std::exception{
-		virtual const char* what() const throw();
-	};
-	
-	class listenException: public std::exception
-	{
-		virtual const char* what() const throw();
-	};
+    // utils
+    void setFdSet();
+    void findFd();
 
-	class selectException: public std::exception
-	{
-		virtual const char* what() const throw();
-	};
+    class socketCreateException : public std::exception
+    {
+        virtual const char* what() const throw();
+    };
 
-	class acceptException: public std::exception
-	{
-		virtual const char* what() const throw();
-	};
+    class bindException : public std::exception
+    {
+        virtual const char* what() const throw();
+    };
 
-	class invalidPortException: public std::exception
-	{
-		virtual const char* what() const throw();
-	};
+    class listenException : public std::exception
+    {
+        virtual const char* what() const throw();
+    };
 
+    class selectException : public std::exception
+    {
+        virtual const char* what() const throw();
+    };
+
+    class acceptException : public std::exception
+    {
+        virtual const char* what() const throw();
+    };
+
+    class invalidPortException : public std::exception
+    {
+        virtual const char* what() const throw();
+    };
 };
-
-
 
 #endif
