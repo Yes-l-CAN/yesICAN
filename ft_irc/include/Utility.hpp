@@ -1,6 +1,9 @@
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
 
+#include <vector>
+#include <string>
+
 class Utility{
     private:
 
