@@ -9,7 +9,7 @@ CanCommand::CanCommand(const CanCommand& obj) {
 }
 
 CanCommand& CanCommand::operator=(const CanCommand& obj){
-	if(*this != obj){
+	if(this != &obj){
 
 	}
 	return *this;
