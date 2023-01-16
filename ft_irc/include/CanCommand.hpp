@@ -18,8 +18,8 @@ class CanCommand{
 
     public:
         CanCommand();
-        CanCommand(const CanCommand& obj);
-        CanCommand& operator=(const CanCommand& obj);
+        // CanCommand(const CanCommand& obj);
+        // CanCommand& operator=(const CanCommand& obj);
         ~CanCommand();
 
 		void cRecv(int fd);

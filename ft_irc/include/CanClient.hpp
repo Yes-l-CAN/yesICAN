@@ -23,11 +23,14 @@ class CanClient
 		CanClient& operator=(const CanClient& ref);
 		~CanClient();
 
+		// setter
 		void setNickname(const std::string name);
-		std::string getNickname(void) const;
 		void setUsername(const std::string name);
-		std::string getUsername(void) const;
 		void setRealname(const std::string name);
+
+		// getter
+		std::string getNickname(void) const;
+		std::string getUsername(void) const;
 		std::string getRealname(void) const;
 
 		void addChannelElement(const std::string key, const CanChannel *pNewChannel);

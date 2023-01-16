@@ -2,12 +2,10 @@
 
 CanChannel::CanChannel()
 {
-
 }
 
 CanChannel::~CanChannel()
 {
-
 }
 
 CanChannel::CanChannel(const CanChannel& ref)
@@ -30,8 +28,7 @@ const std::map<int, CanClient*>& CanChannel::getClientList(void) const
 
 void CanChannel::addClientElement(const int fd, const CanClient *pNewClient)
 {
-	std::pair<std::string, bool>	ret;
-	ret = this->clientList.insert({fd, pNewClient});
+	this->clientList.insert(std::pair<const int, const CanClient*>(fd, pNewClient));
 	if (ret.second == false)
 	{
 		throw (CanChannel::addClientException());
