@@ -1,5 +1,4 @@
-#include "./include/CanServer.hpp"
-
+#include "CanServer.hpp"
 
 void printPacket(unsigned char* packet, unsigned int packetSize);
 
@@ -21,7 +20,7 @@ int main()
 
     /* socket의 통신 대상 지정을 위해 address 사용 -> struct ~*/
     struct sockaddr_in servAddr;
-    servAddr.sin_family = AF_INET; // 주소 체계를 구분하기 위한 변수 addr_in의 경우 항상 AF_INET
+    servAddr.sin_family = AF_INET;                // 주소 체계를 구분하기 위한 변수 addr_in의 경우 항상 AF_INET
     servAddr.sin_addr.s_addr = htonl(INADDR_ANY); // host IP 주소  -> gethostbyname() 통새서 직접 설정 가능
     servAddr.sin_port = htons(MPORT);             // 보트번호!
 
@@ -81,11 +80,11 @@ int main()
     // timeout.tv_sec = 1;
     // timeout.tv_usec = 0;
 
-    int                clientSock_fd = -1;
+    int clientSock_fd = -1;
     struct sockaddr_in clientAddr;
 
     const int buffSize = MAXBUF;
-    char      buffer[buffSize];
+    char buffer[buffSize];
 
     while (1)
     {
@@ -137,81 +136,82 @@ int main()
                        하는지) addrlen: 해당 정수에 struct sockaddr_in 크기 미리 지정되어야
 
                     */
-					try
-					{
-                    clientSock_fd = accept(serverSock_fd, (struct sockaddr*)&clientAddr, &size);
-                    std::cout << "clientfd  ::: " << clientSock_fd << std::endl;
-
-                    // for (i = 0; i < 10; i++)
-                    // 	std::cout << "fd_set bits ::" <<  std::bitset<32>(reads.fds_bits[i]) << std::endl;
-
-                    if (clientSock_fd < 0)
+                    try
                     {
-						throw
-                    }
+                        clientSock_fd = accept(serverSock_fd, (struct sockaddr*)&clientAddr, &size);
+                        std::cout << "clientfd  ::: " << clientSock_fd << std::endl;
 
-                    FD_SET(clientSock_fd, &reads);
-					}
-					catch(const std::exception& e)
-					{
+                        // for (i = 0; i < 10; i++)
+                        // 	std::cout << "fd_set bits ::" <<  std::bitset<32>(reads.fds_bits[i]) << std::endl;
+
+                        if (clientSock_fd < 0)
+                        {
+                            throw
+                        }
+
+                        FD_SET(clientSock_fd, &reads);
+                    }
+                    catch (const std::exception& e)
+                    {
                         std::cerr << "invalid client socket" << std::endl;
                         std::cerr << "ClientSocket : " << clientSock_fd << std::endl;
-                        continue;					}
-				}
-
-                    std::cout << "accept new client! " << std::endl;
-                    std::cout << "ClientSocket : " << clientSock_fd << std::endl;
+                        continue;
+                    }
                 }
-                else
-                {
 
-                    //	do{
-                    ret = recv(i, buffer, buffSize, 0);
-                    if (ret < 0)
-                    {
-                        std::cerr << "couldn't recv client socket error: " << errno << ": " << std::strerror(errno)
-                                  << std::endl;
-                        FD_CLR(i, &reads);
-                        close(i);
-                        break;
-                    }
-                    else if (ret == 0)
-                    {
-                        std::cerr << "receive client socket closed " << std::endl;
-                        FD_CLR(i, &reads);
-                        close(i);
-                        break;
-                    }
-
-                    std::cout << "receive message!!" << std::endl;
-                    std::cout << "Client Socket : " << clientSock_fd << std::endl;
-                    std::cout << "read: " << ret << std::endl;
-
-                    for (int j = 4; j <= clientSock_fd; j++)
-                        ret = send(j, buffer, ret, 0);
-                    if (ret < 0)
-                    {
-                        std::cerr << "couldn't send socket error" << std::endl;
-                        break;
-                    }
-                    std::cout << "send to client socket : " << clientSock_fd << std::endl;
-                    std::cout << "write: " << ret << std::endl;
-
-                    printPacket((unsigned char*)buffer, ret);
-                }
+                std::cout << "accept new client! " << std::endl;
+                std::cout << "ClientSocket : " << clientSock_fd << std::endl;
             }
-            //	}while (false);
+            else
+            {
 
-            //	close (clientSock_fd);
-            //		std::cout << "close client socket : " << clientSock_fd << std::endl;
+                //	do{
+                ret = recv(i, buffer, buffSize, 0);
+                if (ret < 0)
+                {
+                    std::cerr << "couldn't recv client socket error: " << errno << ": " << std::strerror(errno)
+                              << std::endl;
+                    FD_CLR(i, &reads);
+                    close(i);
+                    break;
+                }
+                else if (ret == 0)
+                {
+                    std::cerr << "receive client socket closed " << std::endl;
+                    FD_CLR(i, &reads);
+                    close(i);
+                    break;
+                }
+
+                std::cout << "receive message!!" << std::endl;
+                std::cout << "Client Socket : " << clientSock_fd << std::endl;
+                std::cout << "read: " << ret << std::endl;
+
+                for (int j = 4; j <= clientSock_fd; j++)
+                    ret = send(j, buffer, ret, 0);
+                if (ret < 0)
+                {
+                    std::cerr << "couldn't send socket error" << std::endl;
+                    break;
+                }
+                std::cout << "send to client socket : " << clientSock_fd << std::endl;
+                std::cout << "write: " << ret << std::endl;
+
+                printPacket((unsigned char*)buffer, ret);
+            }
         }
-    }
-    if (serverSock_fd != -1)
-    {
-        close(serverSock_fd);
-    }
+        //	}while (false);
 
-    return (0);
+        //	close (clientSock_fd);
+        //		std::cout << "close client socket : " << clientSock_fd << std::endl;
+    }
+}
+if (serverSock_fd != -1)
+{
+    close(serverSock_fd);
+}
+
+return (0);
 }
 
 void printPacket(unsigned char* packet, unsigned int packetSize)
