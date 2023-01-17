@@ -10,7 +10,7 @@ OBJ_DIR 		:= objs/
 OBJS 			:= $(addprefix $(OBJ_DIR), $(SRCS:.cpp=.o))
 
 CXX 			:= c++
-CXXFLAGS		:= -Wall -Wextra -Werror -std=c++98 -Iinclude
+CXXFLAGS		:= -Iinclude -g3 -fsanitize=address #-Wall -Wextra -Werror -std=c++98 
 RM				:= rm -f
 
 $(NAME)			:	$(OBJS)

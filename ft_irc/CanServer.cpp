@@ -1,6 +1,6 @@
 #include "CanServer.hpp"
 
-CanServer::CanServer() : socketFd(-1), maxFd(0)
+CanServer::CanServer() : socketFd(-1), maxFd(1000)
 {
     // Default Constructor
     setServAddr();
@@ -11,8 +11,8 @@ CanServer::CanServer() : socketFd(-1), maxFd(0)
 
 CanServer::~CanServer()
 {
-	std::map<int, CanClient*>::iterator it;
     // Destuctor
+	std::map<int, CanClient*>::iterator it;
 	if (this->clientList.empty() == true)
 	{
 		return ;
@@ -53,11 +53,17 @@ void CanServer::setServer(char *port, char *pw){
 void CanServer::s_On(){
 	try{
 		s_Socket();
+
+		// 포트 점유 방지
+		int option = true;
+		setsockopt(this->socketFd, SOL_SOCKET, SO_REUSEADDR, &option, sizeof(option));
+		
 		setServAddr();
 		s_Bind();
 		s_Listen();
 		setFdSet();
-	} catch(std::exception &e){
+		std::cout << "server on!" << std::endl;
+ 	} catch(std::exception &e){
 		std::cout << e.what() << std::endl;
 	}
     // implement server logic here
@@ -72,8 +78,12 @@ void CanServer::setServAddr()
 
 void CanServer::findFd(){
 	//너무...너무... 안 이쁜.... 넣고나니 빼는게 나을 듯 한....
-	for(int i = 0; i < this->maxFd + 1; i++){
-		if(FD_ISSET(i, &this->copyReads) && i == this->socketFd){
+	// for(int i = 0; i < this->maxFd + 1; i++)
+	for(int i = 3; i < this->maxFd + 1; i++)
+	{
+		// if(FD_ISSET(i, &this->copyReads) && i == this->socketFd)
+		if(FD_ISSET(i, &this->copyReads) == this->socketFd)
+		{
 			try {
 				s_Accept();
 			} catch(std::exception &e) {
@@ -120,6 +130,7 @@ void CanServer::s_Select()
 		this->copyReads = this->reads;
 
 		res = select(this->maxFd + 1, &(this->copyReads), NULL, NULL, &timeout);
+		std::cout << "res : " << res << "\n";
 		if(res < 0)
 			throw (CanServer::selectException());
 		else if(res == 0)
@@ -146,12 +157,37 @@ void CanServer::s_Accept()
 	CanClient *temp = new CanClient(clientAddr);
 	clientList.insert(std::make_pair(clientSockFd, temp)); 
 }
+
 // utils
 void CanServer::setFdSet()
 {
     fd_set* reads_addr = &this->reads;
     FD_ZERO(reads_addr);
     FD_SET(this->socketFd, reads_addr);
+}
+
+int CanServer::Transmission()
+{
+	for(int i = 0; i < this->maxFd; i++)
+	{
+		if(FD_ISSET(i, &(this->copyReads)))
+		{
+			if(i == this->socketFd)
+			{
+				s_Accept();
+				std::cout << "Accepted socket fd!\n";
+			}
+			return (i);
+		} 
+	}
+	return (-1);
+}
+
+//getter
+
+int		CanServer::getSocketFd() const
+{
+	return (this->socketFd);
 }
 
 // exception

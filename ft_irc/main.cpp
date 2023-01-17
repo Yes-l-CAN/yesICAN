@@ -9,15 +9,15 @@ int main(int argc, char* argv[])
     static_cast<void>(argv);
     if (argc != 3)
     {
-        std::cout << "./CanIRC [PASSWORD] [PORT]";
+        std::cout << "./CanIRC [PORT] [PASSWORD]";
         return (1);
     }
 
-    Utility util;
-    static_cast<void>(util);
+    Operation operation;
+    while(1)
+        operation.Transmission();
 
-    CanServer serv;
-    serv.s_On();
+    
 
     return (0);
 }

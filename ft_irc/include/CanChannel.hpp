@@ -11,6 +11,7 @@ class CanChannel
 {
 
 private:
+    std::string channelName;
     std::map<int, CanClient*> clientList;
 
 public:
@@ -19,9 +20,13 @@ public:
     CanChannel(const CanChannel& ref);
     CanChannel& operator=(const CanChannel& ref);
 
+    CanChannel(const std::string channelName);
+    const std::string& getChannelName(void);
+
     const std::map<int, CanClient*>& getClientList(void) const;
     void addClientElement(const int fd, CanClient* pNewClient);
     void deleteClientElement(const int fd);
+
 
     class addClientException : public std::exception
     {

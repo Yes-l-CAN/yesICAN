@@ -17,7 +17,7 @@ private:
     std::string realname;
     struct sockaddr_in addr;
 
-    std::map<std::string, CanChannel*> channelList;
+    std::map<std::string, CanChannel*> channelList; // channelList which the client belongs
 
 public:
     CanClient();
@@ -36,7 +36,8 @@ public:
     std::string getUsername(void) const;
     std::string getRealname(void) const;
 
-    void addChannelElement(std::string key, CanChannel* pNewChannel);
+    void addChannelElement(std::string key, CanChannel* pNewChannel);   // join channel
+    void deleteChannelElement(std::string key);    // come outside channel
 
     void cSend(int fd);
 

@@ -7,10 +7,6 @@ CanClient::CanClient()
 {
 }
 
-CanClient::~CanClient()
-{
-}
-
 CanClient::CanClient(const CanClient& ref)
 {
     *this = ref;
@@ -22,6 +18,11 @@ CanClient& CanClient::operator=(const CanClient& ref)
     {
     }
     return (*this);
+}
+
+CanClient::~CanClient()
+{
+    
 }
 
 CanClient::CanClient(const struct sockaddr_in addr) : addr(addr)

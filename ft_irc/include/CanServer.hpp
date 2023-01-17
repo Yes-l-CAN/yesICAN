@@ -20,11 +20,13 @@
 #include <utility>
 
 #include "CanClient.hpp"
+#include "CanServer.hpp"
 
-#define MPORT 4242
+#define MPORT 4244
 
 #define MAX_FD 1000
 #define MAXBUF 10
+
 
 class CanServer
 {
@@ -40,7 +42,8 @@ private:
 
     int maxFd;
 
-    std::map<int, CanClient*> clientList;
+    std::map<int, CanClient*>           clientList;     // current exist all clients list
+    std::map<std::string, CanChannel*>  channelList;    // current exist all channel list
 
 public:
     CanServer();
@@ -62,6 +65,16 @@ public:
     // utils
     void setFdSet();
     void findFd();
+    
+    void addChannelElement(const std::string channelName, CanChannel* pNewChannel);       // add channel List
+    void deleteChannelElement(const std::string channelName);    // delete channel List
+
+
+    // socket transmission
+    int  Transmission(); 
+
+    //getter
+    int  getSocketFd() const;
 
     class socketCreateException : public std::exception
     {

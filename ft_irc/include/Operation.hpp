@@ -2,6 +2,10 @@
 #define OPERATION_HPP
 
 #include "CanServer.hpp"
+#include "CanClient.hpp"
+#include "CanChannel.hpp"
+#include "Operation.hpp"
+#include "Utility.hpp"
 
 #define SUCCESS 1
 #define FAIL 0
@@ -11,19 +15,26 @@ class Operation
 {
 
 private:
+    int setFd;
     int result;
+    CanServer* server;
+    Utility     util;
 
 protected:
     static const int bufferSize = 300;
     char buffer[bufferSize];
 
 public:
-    CanServer* server;
-
     Operation();
-    // Operation(const Operation& obj);
-    // Operation& operator=(const Operation& obj);
+    Operation(const Operation& obj);
+    Operation& operator=(const Operation& obj);
     ~Operation();
+
+    // socket transmission
+    void    Transmission(); 
+
+    // check command after parsing 
+    void    CommandChecker(std::vector<std::string> argv);
 
     void cRecv(int fd);
     void Client2ServSend(int fd);
