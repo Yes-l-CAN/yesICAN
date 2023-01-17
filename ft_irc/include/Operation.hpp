@@ -50,6 +50,7 @@ public:
     void Kick(std::vector<std::string> argv);
     void Notice(std::vector<std::string> argv);
     void PrivateMSG(std::vector<std::string> argv);
+    void Quit(std::vector<std::string> argv);
 
     class recvException : public std::exception
     {
