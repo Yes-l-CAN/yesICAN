@@ -17,7 +17,5 @@ int main(int argc, char* argv[])
     while(1)
         operation.Transmission();
 
-    
-
     return (0);
 }

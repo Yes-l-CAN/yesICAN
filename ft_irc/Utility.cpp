@@ -112,6 +112,26 @@ std::vector<std::string> Utility::splitArrWithColon(char *s)
     {
         throw(commandArgvException());
     }
+<<<<<<< HEAD
+=======
+    
+    while ((position = str.find(" ", position)) != std::string::npos)
+    {
+        std::string temp = "";
+        for (size_t i = start; i < position; i++)
+        {
+            temp += str[i];
+        }
+        v.push_back(temp);
+        position += 1;
+        start = position;
+    }
+    if(position == std::string::npos)
+        position = str.length();
+    for (size_t i = start; i < position; i++)
+        temp += str[i];
+    v.push_back(temp);
+>>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
 
     std::string tmp = "";
     if((c_position = str.find(":", c_position)) != std::string::npos)

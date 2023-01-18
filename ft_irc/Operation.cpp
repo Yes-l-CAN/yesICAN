@@ -12,15 +12,24 @@ Operation::Operation()
     this->server->s_On();
 }
 
+<<<<<<< HEAD
 
 Operation::Operation(char *s1, char *s2)
 {
+=======
+Operation::Operation(char *s1, char *s2)
+{
+    std::cout << "constructor!!!!" << std::endl;
+>>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
     this->server = new CanServer();
     this->server->setServer(s1, s2);
     this->server->s_On();
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
 Operation::Operation(const Operation &obj)
 {
     *this = obj;
@@ -31,7 +40,6 @@ Operation &Operation::operator=(const Operation &obj)
 {
     if (this != &obj)
     {
-
         this->setFd = obj.setFd;
         this->result = obj.result;
         for (int i = 0; i < bufferSize; i++)
@@ -55,6 +63,7 @@ Operation::~Operation()
 
 void Operation::Transmission()
 {
+
     server->s_Select();
     this->setFd = server->Transmission(); // return i(fd)
     if (this->setFd == server->getSocketFd())
@@ -156,20 +165,38 @@ void Operation::Pass(std::vector<std::string> argv, CanClient* targetClient)
     // std::cout << "Pass Called!" << std::endl;
     std::vector<std::string>::iterator it;
     it = argv.end() - 1;
-    if (*it == this->server->getPassWord())
+   
+    if (targetClient->getMemberLevel() == USER_FIN 
+        || targetClient->getMemberLevel() == NICK_FIN
+        || targetClient->getMemberLevel() == CERTIFICATION_FIN)
+        return ;
+    else if (server->getInputPasswordNum() == *it)
         targetClient->setMemberLevel(PASS_FIN);
     else
-        throw(CanException::pwIncorrectException());
+        throw(CanException::PasswordNotSameException());
+
 }
 
 int Operation::Nick(std::vector<std::string> argv, CanClient* targetClient)
 {
+<<<<<<< HEAD
     std::string reply;
     if(targetClient->getMemberLevel() < PASS_FIN)
         throw(CanException::NotCertificatedException());
     std::vector<std::string>::iterator it;
     it = argv.end() - 1;
     for(std::map<int, CanClient*>::iterator it2 = server->getClientList()->begin(); it2 != server->getClientList()->end(); ++it2)
+=======
+    //std::cout << "Nick called" << std::endl;
+    std::string replyStr;
+    // std::cout << "Nick Called!" << std::endl;
+    std::vector<std::string>::iterator it;
+    it = argv.end() - 1;
+    //   std::map<int, CanClient *>::iterator it2;
+    // std::cout << "it : " << *it << std::endl;
+    // std::cout << "it2 : " << it2->first << std::endl;
+    for(std::map<int, CanClient *>::iterator it2 = server->getClientList()->begin(); it2 != server->getClientList()->end(); ++it2)
+>>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
     {
         if(it2->second->getNickname() == *it)
             throw(CanException::existNickException());
@@ -226,25 +253,35 @@ void Operation::Quit(std::vector<std::string> argv, CanClient* targetClient)
 // void    Pong(std::vector<std::string> argv, CanClient* targetClient);
 void Operation::Join(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "join Called!" << std::endl;
 }
 
 void Operation::Part(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "part Called!" << std::endl;
 }
 
 void Operation::Kick(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "kick Called!" << std::endl;
 }
 
 void Operation::Notice(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "notice Called!" << std::endl;
 }
 
 void Operation::PrivateMSG(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "privatemsg Called!" << std::endl;
 }

@@ -23,8 +23,6 @@ private:
 
     std::map<std::string, CanChannel*> channelList; // channelList which the client belongs
 
-    
-
 public:
     
     CanClient();
@@ -65,4 +63,4 @@ public:
 //     return (os);
 // }
 
-#endif
+#endif // CAN_CLIENT_HPP
