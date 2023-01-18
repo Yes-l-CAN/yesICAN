@@ -12,6 +12,14 @@ Operation::Operation()
     this->server->s_On();
 }
 
+Operation::Operation(char *s1, char *s2)
+{
+    std::cout << "constructor!!!!" << std::endl;
+    this->server = new CanServer();
+    this->server->setServer(s1, s2);
+    this->server->s_On();
+}
+
 Operation::Operation(const Operation &obj)
 {
     *this = obj;
@@ -43,10 +51,8 @@ Operation::~Operation()
     delete server;
 }
 
-void Operation::Transmission(char* argv1, char* argv2)
+void Operation::Transmission()
 {
-    server->setInputPortNum(argv1);
-    server->setInputPassword(argv2);
 
     server->s_Select();
     this->setFd = server->Transmission(); // return i(fd)

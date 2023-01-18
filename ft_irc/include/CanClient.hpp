@@ -18,11 +18,9 @@ private:
     std::string username;
     std::string realname;
     struct sockaddr_in addr;
-    int         isMember;
+    int         isMember = 0;
 
     std::map<std::string, CanChannel*> channelList; // channelList which the client belongs
-
-    
 
 public:
     
@@ -61,4 +59,4 @@ public:
 //     return (os);
 // }
 
-#endif
+#endif // CAN_CLIENT_HPP

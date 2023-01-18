@@ -46,6 +46,7 @@ CanServer& CanServer::operator=(const CanServer& obj){
 // setter
 void CanServer::setServer(char *port, char *pw){
 	this->port = std::atoi(port);
+	std::cout << "port ::" << this->port << std::endl;
 	if(this->port < 1025 || this->port > 65536)
 		throw(CanException::invalidPortException());
 	this->password = static_cast<std::string>(pw);
@@ -74,7 +75,7 @@ void CanServer::setServAddr()
 {
     this->addr.sin_family = AF_INET;
     this->addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    this->addr.sin_port = htons(this->inputPortNum); 
+    this->addr.sin_port = htons(this->port); 
 }
 
 void CanServer::s_Socket(){
@@ -151,16 +152,6 @@ void CanServer::setFdSet()
     fd_set* reads_addr = &this->reads;
     FD_ZERO(reads_addr);
     FD_SET(this->socketFd, reads_addr);
-}
-
-void CanServer::setInputPassword(char* str)
-{
-	this->inputPassword = str;
-}
-
-void CanServer::setInputPortNum(char* str)
-{
-	this->inputPortNum = atoi(str);
 }
 
 void CanServer::findFd(){

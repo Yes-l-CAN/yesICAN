@@ -39,4 +39,4 @@ public:
     // }
 };
 
-#endif
+#endif // CAN_CHANNEL_HPP

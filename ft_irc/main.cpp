@@ -13,9 +13,9 @@ int main(int argc, char* argv[])
         return (1);
     }
 
-    Operation operation;
+    Operation operation(argv[1], argv[2]);
     while(1)
-        operation.Transmission(argv[1], argv[2]);
+        operation.Transmission();
 
     return (0);
 }

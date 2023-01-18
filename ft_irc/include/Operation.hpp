@@ -35,12 +35,13 @@ public:
     };
 
     Operation();
+    Operation(char *s1, char *s2);
     Operation(const Operation &obj);
     Operation &operator=(const Operation &obj);
     ~Operation();
 
     // socket transmission
-    void Transmission(char* str1, char* str2);
+    void Transmission();
 
     // find sent Client
     CanClient   *findClient(int fd);
