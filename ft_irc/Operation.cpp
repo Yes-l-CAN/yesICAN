@@ -12,24 +12,14 @@ Operation::Operation()
     this->server->s_On();
 }
 
-<<<<<<< HEAD
 
 Operation::Operation(char *s1, char *s2)
 {
-=======
-Operation::Operation(char *s1, char *s2)
-{
-    std::cout << "constructor!!!!" << std::endl;
->>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
     this->server = new CanServer();
     this->server->setServer(s1, s2);
     this->server->s_On();
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
 Operation::Operation(const Operation &obj)
 {
     *this = obj;
@@ -179,24 +169,12 @@ void Operation::Pass(std::vector<std::string> argv, CanClient* targetClient)
 
 int Operation::Nick(std::vector<std::string> argv, CanClient* targetClient)
 {
-<<<<<<< HEAD
     std::string reply;
     if(targetClient->getMemberLevel() < PASS_FIN)
         throw(CanException::NotCertificatedException());
     std::vector<std::string>::iterator it;
     it = argv.end() - 1;
     for(std::map<int, CanClient*>::iterator it2 = server->getClientList()->begin(); it2 != server->getClientList()->end(); ++it2)
-=======
-    //std::cout << "Nick called" << std::endl;
-    std::string replyStr;
-    // std::cout << "Nick Called!" << std::endl;
-    std::vector<std::string>::iterator it;
-    it = argv.end() - 1;
-    //   std::map<int, CanClient *>::iterator it2;
-    // std::cout << "it : " << *it << std::endl;
-    // std::cout << "it2 : " << it2->first << std::endl;
-    for(std::map<int, CanClient *>::iterator it2 = server->getClientList()->begin(); it2 != server->getClientList()->end(); ++it2)
->>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
     {
         if(it2->second->getNickname() == *it)
             throw(CanException::existNickException());

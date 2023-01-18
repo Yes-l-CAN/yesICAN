@@ -6,12 +6,8 @@ CanServer::CanServer() : socketFd(-1), maxFd(1000)
     setServAddr();
     FD_ZERO(&reads);
     FD_ZERO(&copyReads);
-<<<<<<< HEAD
 
 	this->clientList = new std::map<int, CanClient *>;
-=======
-	
->>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
 }
 
 CanServer::~CanServer()
@@ -142,17 +138,8 @@ void CanServer::s_Accept()
 	}
 	FD_SET(clientSockFd, &reads);
 
-<<<<<<< HEAD
 	CanClient *temp = new CanClient(clientAddr, clientSockFd);
 	clientList->insert(std::make_pair(clientSockFd, temp));
-=======
-	CanClient *temp = new CanClient(clientAddr);
-	clientList->insert(std::make_pair(clientSockFd, temp));
-	std::cout << "Client list first: fd" ;
-	std::cout << clientList->begin()->first << std::endl;
-	std::cout << "client list second: client";
-	std::cout << clientList->begin()->second->getMemberLevel()<< std::endl;
->>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
 }
 
 // utils

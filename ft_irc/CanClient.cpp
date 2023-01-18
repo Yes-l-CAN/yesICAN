@@ -3,16 +3,11 @@
 #include <map>
 #include <utility>
 
-<<<<<<< HEAD
 CanClient::CanClient() :  socketFd(-1), nickname(), username(), realname(), addr(), isMember(0)
 {
 }
 
 CanClient::CanClient(int fd): socketFd(fd), nickname(), username(), realname(), addr(), isMember(0)
-=======
-CanClient::CanClient()
-: nickname(), username(), realname(), isMember(0)
->>>>>>> 79708aa37c0d6a16368a08a4952ccd511d8813d3
 {
     memset(&this->addr, 0, sizeof(this->addr));
 }
