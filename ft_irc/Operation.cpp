@@ -72,7 +72,7 @@ void Operation::Transmission()
 
 CanClient   *Operation::findClient(int fd)
 {   
-    return (server->getClientList().find(fd)->second);
+    return (server->getClientList()->find(fd)->second);
 }
 
 void Operation::CommandChecker(std::vector<std::string> argv, CanClient* targetClient)
@@ -159,10 +159,10 @@ int Operation::Nick(std::vector<std::string> argv, CanClient* targetClient)
     // std::cout << "Nick Called!" << std::endl;
     std::vector<std::string>::iterator it;
     it = argv.end() - 1;
-    //  std::map<int, CanClient*>::iterator it2 = server->getClientList().begin();
+    std::map<int, CanClient*>::iterator it3 = server->getClientList()->begin();
     // std::cout << "it : " << *it << std::endl;
-    std::cout << "it2 : " << server->getClientList().begin()->first << std::endl;
-    for(std::map<int, CanClient*>::iterator it2 = server->getClientList().begin(); it2 != server->getClientList().end(); ++it2)
+    std::cout << "it2 : " << it3->first << std::endl;
+    for(std::map<int, CanClient*>::iterator it2 = server->getClientList()->begin(); it2 != server->getClientList()->end(); ++it2)
     {
         if(it2->second->getNickname() == *it)
             throw(CanException::existNickException());
@@ -184,7 +184,7 @@ int Operation::User(std::vector<std::string> argv, CanClient* targetClient)
     std::vector<std::string>::iterator it;
     it = argv.end() - 1;
     std::map<int, CanClient*>::iterator it2;
-    for(it2 = server->getClientList().begin(); it2 != server->getClientList().end(); it2++)
+    for(it2 = server->getClientList()->begin(); it2 != server->getClientList()->end(); it2++)
     {
         if(it2->second->getUsername() == *it)
             throw(CanException::existUserException());

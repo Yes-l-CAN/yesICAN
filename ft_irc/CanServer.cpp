@@ -7,18 +7,20 @@ CanServer::CanServer() : socketFd(-1), maxFd(1000)
     FD_ZERO(&reads);
     FD_ZERO(&copyReads);
 
+	this->clientList = new std::map<int, CanClient *>;
+
 }
 
 CanServer::~CanServer()
 {
     // Destuctor
 	std::map<int, CanClient*>::iterator it;
-	if (this->clientList.empty() == true)
+	if (this->clientList->empty() == true)
 	{
 		return ;
 	}
 
-	for (it = this->clientList.begin(); it != this->clientList.end(); it++)
+	for (it = this->clientList->begin(); it != this->clientList->end(); it++)
 	{
 		close(it->first);
 		if (it->second != NULL)
@@ -26,7 +28,7 @@ CanServer::~CanServer()
 			delete it->second;
 		}
 	}
-	this->clientList.clear();
+	this->clientList->clear();
 }
 
 CanServer::CanServer(const CanServer& obj){
@@ -138,7 +140,7 @@ void CanServer::s_Accept()
 	FD_SET(clientSockFd, &reads);
 
 	CanClient *temp = new CanClient(clientAddr);
-	clientList.insert(std::make_pair(clientSockFd, temp));
+	clientList->insert(std::make_pair(clientSockFd, temp));
 }
 
 // utils
@@ -214,7 +216,7 @@ fd_set CanServer::getCopyReads() const{
 }
 
 
-std::map<int, CanClient*> CanServer::getClientList() const{
+std::map<int, CanClient*> *CanServer::getClientList() const{
 	return(this->clientList);
 }
 

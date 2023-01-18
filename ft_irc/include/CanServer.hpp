@@ -42,7 +42,7 @@ private:
 
     int maxFd;
 
-    std::map<int, CanClient *> clientList;           // current exist all clients list
+    std::map<int, CanClient *> *clientList;           // current exist all clients list
     std::map<std::string, CanChannel *> channelList; // current exist all channel list
 
     CanException except;
@@ -81,7 +81,7 @@ public:
     struct sockaddr_in getAddr() const;
     fd_set getReads() const;
     fd_set getCopyReads() const;
-    std::map<int, CanClient *> getClientList() const;
+    std::map<int, CanClient *> *getClientList() const;
     std::map<std::string, CanChannel *> getChannelList() const;
 };
 
