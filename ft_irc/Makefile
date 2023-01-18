@@ -4,7 +4,8 @@ SRCS 			:= main.cpp \
 					CanClient.cpp \
 					Operation.cpp \
 					CanServer.cpp \
-					Utility.cpp
+					Utility.cpp \
+					CanException.cpp
 
 OBJ_DIR 		:= objs/
 OBJS 			:= $(addprefix $(OBJ_DIR), $(SRCS:.cpp=.o))

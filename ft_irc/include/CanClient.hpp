@@ -6,6 +6,8 @@
 #include <netinet/ip.h>
 #include <string>
 #include <sys/socket.h>
+#include <iostream>
+
 
 class CanChannel;
 
@@ -16,10 +18,14 @@ private:
     std::string username;
     std::string realname;
     struct sockaddr_in addr;
+    int         isMember = 0;
 
     std::map<std::string, CanChannel*> channelList; // channelList which the client belongs
 
+    
+
 public:
+    
     CanClient();
     CanClient(const CanClient& ref);
     CanClient(const struct sockaddr_in addr);
@@ -30,11 +36,13 @@ public:
     void setNickname(const std::string name);
     void setUsername(const std::string name);
     void setRealname(const std::string name);
+    void setMemberLevel(int lev);
 
     // getter
     std::string getNickname(void) const;
     std::string getUsername(void) const;
     std::string getRealname(void) const;
+    int         getMemberLevel(void) const;
 
     void addChannelElement(std::string key, CanChannel* pNewChannel);   // join channel
     void deleteChannelElement(std::string key);    // come outside channel
@@ -46,5 +54,11 @@ public:
         virtual const char* what() const throw();
     };
 };
+
+// std::ostream    &operator<<(std::ostream &os, CanClient& client)
+// {
+//     os << "test!!" << std::endl;
+//     return (os);
+// }
 
 #endif

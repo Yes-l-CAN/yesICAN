@@ -1,6 +1,9 @@
 <Client Messages>
 Messages are client-to-server only unless otherwise specified.
 
+### ERRORMSG
+https://www.rfc-editor.org/rfc/rfc1459#section-4.1.1
+
 ### PASS
 ```cpp
 PASS <password>

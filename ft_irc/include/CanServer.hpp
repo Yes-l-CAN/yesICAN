@@ -21,12 +21,12 @@
 
 #include "CanClient.hpp"
 #include "CanServer.hpp"
+#include "CanException.hpp"
 
 #define MPORT 4244
 
 #define MAX_FD 1000
 #define MAXBUF 10
-
 
 class CanServer
 {
@@ -42,20 +42,22 @@ private:
 
     int maxFd;
 
-    std::map<int, CanClient*>           clientList;     // current exist all clients list
-    std::map<std::string, CanChannel*>  channelList;    // current exist all channel list
+    std::map<int, CanClient *> clientList;           // current exist all clients list
+    std::map<std::string, CanChannel *> channelList; // current exist all channel list
+
+    CanException except;
 
 public:
     CanServer();
-    CanServer(const CanServer& obj);
-    CanServer& operator=(const CanServer& obj);
+    CanServer(const CanServer &obj);
+    CanServer &operator=(const CanServer &obj);
     ~CanServer();
 
-    void setServer(char* port, char* pw);
     void s_On();
-    // void serverOff();
+    
+    // socket transmission
+    int Transmission();
 
-    void setServAddr();
     void s_Socket();
     void s_Bind();
     void s_Listen();
@@ -63,48 +65,24 @@ public:
     void s_Accept();
 
     // utils
-    void setFdSet();
     void findFd();
-    
-    void addChannelElement(const std::string channelName, CanChannel* pNewChannel);       // add channel List
-    void deleteChannelElement(const std::string channelName);    // delete channel List
+    void addChannelElement(const std::string channelName, CanChannel *pNewChannel); // add channel List
+    void deleteChannelElement(const std::string channelName);                       // delete channel List
 
+     // setter
+    void setServer(char *port, char *pw);
+    void setServAddr();
+    void setFdSet();
 
-    // socket transmission
-    int  Transmission(); 
-
-    //getter
-    int  getSocketFd() const;
-
-    class socketCreateException : public std::exception
-    {
-        virtual const char* what() const throw();
-    };
-
-    class bindException : public std::exception
-    {
-        virtual const char* what() const throw();
-    };
-
-    class listenException : public std::exception
-    {
-        virtual const char* what() const throw();
-    };
-
-    class selectException : public std::exception
-    {
-        virtual const char* what() const throw();
-    };
-
-    class acceptException : public std::exception
-    {
-        virtual const char* what() const throw();
-    };
-
-    class invalidPortException : public std::exception
-    {
-        virtual const char* what() const throw();
-    };
+    // getter
+    int getPort() const;
+    std::string getPassWord() const;
+    int getSocketFd() const;
+    struct sockaddr_in getAddr() const;
+    fd_set getReads() const;
+    fd_set getCopyReads() const;
+    std::map<int, CanClient *> getClientList() const;
+    std::map<std::string, CanChannel *> getChannelList() const;
 };
 
 #endif

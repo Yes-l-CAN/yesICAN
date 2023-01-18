@@ -5,6 +5,7 @@ std::vector<std::string> Utility::splitArr(char *s)
 {
     std::vector<std::string> v;
     std::string str = static_cast<std::string>(s);
+    std::string temp = "";
     size_t position = 0;
     size_t start = 0;
     
@@ -26,6 +27,13 @@ std::vector<std::string> Utility::splitArr(char *s)
         position += 1;
         start = position;
     }
+    if(position == std::string::npos)
+        position = str.length();
+    for (size_t i = start; i < position; i++)
+    { 
+        temp += str[i];
+    }
+    v.push_back(temp);
 
     return (v);
 }

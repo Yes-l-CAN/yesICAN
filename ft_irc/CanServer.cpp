@@ -43,10 +43,11 @@ CanServer& CanServer::operator=(const CanServer& obj){
 	return (*this);
 }
 
+// setter
 void CanServer::setServer(char *port, char *pw){
 	this->port = std::atoi(port);
 	if(this->port < 1025 || this->port > 65536)
-		throw(invalidPortException());
+		throw(CanException::invalidPortException());
 	this->password = static_cast<std::string>(pw);
 }
 
@@ -76,6 +77,78 @@ void CanServer::setServAddr()
     this->addr.sin_port = htons(MPORT); 
 }
 
+void CanServer::s_Socket(){
+	int	fd;
+
+	fd = socket(AF_INET, SOCK_STREAM, 0);
+	if(fd < 0)
+		throw (CanException::socketCreateException());
+	this->socketFd = fd;
+}
+
+void CanServer::s_Bind(){
+	int		res;
+
+	res = bind(this->socketFd, (struct sockaddr*)&(this->addr), sizeof(this->addr));
+	if(res < 0)
+		throw(CanException::bindException());
+}
+
+void CanServer::s_Listen()
+{
+	if (listen(this->socketFd, MAX_FD) < 0)
+    {
+        throw(CanException::listenException());
+    }
+}
+
+void CanServer::s_Select()
+{
+	int		res;
+	struct timeval	timeout;
+
+	while(1){
+		timeout.tv_sec = 5;
+		timeout.tv_usec = 500;
+		this->copyReads = this->reads;
+
+		res = select(this->maxFd + 1, &(this->copyReads), NULL, NULL, &timeout);
+		std::cout << "res : " << res << "\n";
+		if(res < 0)
+			throw (CanException::selectException());
+		else if(res == 0)
+			continue;
+		else
+			break;
+	}
+}
+
+void CanServer::s_Accept()
+{
+	int clientSockFd = -1;
+	struct sockaddr_in clientAddr;
+	unsigned int size = sizeof(clientAddr);
+
+	
+	clientSockFd = accept(this->socketFd, (struct sockaddr*)&clientAddr, &size);
+	if (clientSockFd < 0)
+	{
+		throw (CanException::acceptException());
+	}
+	FD_SET(clientSockFd, &reads);
+
+	CanClient *temp = new CanClient(clientAddr);
+	clientList.insert(std::make_pair(clientSockFd, temp));
+}
+
+// utils
+void CanServer::setFdSet()
+{
+    fd_set* reads_addr = &this->reads;
+    FD_ZERO(reads_addr);
+    FD_SET(this->socketFd, reads_addr);
+}
+
 void CanServer::findFd(){
 	//너무...너무... 안 이쁜.... 넣고나니 빼는게 나을 듯 한....
 	// for(int i = 0; i < this->maxFd + 1; i++)
@@ -94,78 +167,7 @@ void CanServer::findFd(){
 	}
 }
 
-void CanServer::s_Socket(){
-	int	fd;
-
-	fd = socket(AF_INET, SOCK_STREAM, 0);
-	if(fd < 0)
-		throw (CanServer::socketCreateException());
-	this->socketFd = fd;
-}
-
-void CanServer::s_Bind(){
-	int		res;
-
-	res = bind(this->socketFd, (struct sockaddr*)&(this->addr), sizeof(this->addr));
-	if(res < 0)
-		throw(CanServer::bindException());
-}
-
-void CanServer::s_Listen()
-{
-	if (listen(this->socketFd, MAX_FD) < 0)
-    {
-        throw(CanServer::listenException());
-    }
-}
-
-void CanServer::s_Select()
-{
-	int		res;
-	struct timeval	timeout;
-
-	while(1){
-		timeout.tv_sec = 5;
-		timeout.tv_usec = 500;
-		this->copyReads = this->reads;
-
-		res = select(this->maxFd + 1, &(this->copyReads), NULL, NULL, &timeout);
-		std::cout << "res : " << res << "\n";
-		if(res < 0)
-			throw (CanServer::selectException());
-		else if(res == 0)
-			continue;
-		else
-			break;
-	}
-}
-
-void CanServer::s_Accept()
-{
-	int clientSockFd = -1;
-	struct sockaddr_in clientAddr;
-	unsigned int size = sizeof(clientAddr);
-
-	
-	clientSockFd = accept(this->socketFd, (struct sockaddr*)&clientAddr, &size);
-	if (clientSockFd < 0)
-	{
-		throw (CanServer::acceptException());
-	}
-	FD_SET(clientSockFd, &reads);
-
-	CanClient *temp = new CanClient(clientAddr);
-	clientList.insert(std::make_pair(clientSockFd, temp)); 
-}
-
-// utils
-void CanServer::setFdSet()
-{
-    fd_set* reads_addr = &this->reads;
-    FD_ZERO(reads_addr);
-    FD_SET(this->socketFd, reads_addr);
-}
-
+// socket transmission
 int CanServer::Transmission()
 {
 	for(int i = 0; i < this->maxFd; i++)
@@ -184,33 +186,39 @@ int CanServer::Transmission()
 }
 
 //getter
+int	CanServer::getPort() const
+{
+	return (this->port);
+}
+
+std::string CanServer::getPassWord() const
+{
+	return (this->password);
+}
 
 int		CanServer::getSocketFd() const
 {
 	return (this->socketFd);
 }
 
-// exception
-const char *CanServer::socketCreateException::what() const throw(){
-	return ("can't create socket error");
+struct sockaddr_in CanServer::getAddr() const{
+	return(this->addr);
 }
 
-const char *CanServer::bindException::what() const throw(){
-	return ("Bind error");
+fd_set CanServer::getReads() const{
+	return(this->reads);
 }
 
-const char *CanServer::listenException::what() const throw(){
-	return ("Listen error");
+fd_set CanServer::getCopyReads() const{
+	return(this->copyReads);
 }
 
-const char *CanServer::selectException::what() const throw(){
-	return ("Select error");
+
+std::map<int, CanClient*> CanServer::getClientList() const{
+	return(this->clientList);
 }
 
-const char	*CanServer::acceptException::what() const throw() {
-	return ("Accept error");
+std::map<std::string, CanChannel*> CanServer::getChannelList() const{
+	return(this->channelList);
 }
 
-const char	*CanServer::invalidPortException::what() const throw() {
-	return ("invalid Port Num");
-}

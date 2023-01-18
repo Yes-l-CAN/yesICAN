@@ -44,6 +44,16 @@ void CanClient::setUsername(const std::string name)
     this->username = name;
 }
 
+void CanClient::setMemberLevel(int lev)
+{
+    this->isMember = lev;
+}
+
+int CanClient::getMemberLevel(void) const
+{
+    return (this->isMember);
+}
+
 std::string CanClient::getUsername(void) const
 {
     return (this->username);
