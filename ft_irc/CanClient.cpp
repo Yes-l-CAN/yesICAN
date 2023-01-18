@@ -4,7 +4,9 @@
 #include <utility>
 
 CanClient::CanClient()
+: nickname(), username(), realname()
 {
+    memset(&this->addr, 0, sizeof(this->addr));
 }
 
 CanClient::CanClient(const CanClient& ref)
