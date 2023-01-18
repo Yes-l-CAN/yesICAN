@@ -19,7 +19,7 @@ private:
     std::string username;
     std::string realname;
     struct sockaddr_in addr;
-    int         isMember = 0;
+    int         isMember;
 
     std::map<std::string, CanChannel*> channelList; // channelList which the client belongs
 

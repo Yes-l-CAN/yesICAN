@@ -3,11 +3,11 @@
 #include <map>
 #include <utility>
 
-CanClient::CanClient()
+CanClient::CanClient() :  socketFd(-1), nickname(), username(), realname(), addr(), isMember(0)
 {
 }
 
-CanClient::CanClient(int fd): socketFd(fd)
+CanClient::CanClient(int fd): socketFd(fd), nickname(), username(), realname(), addr(), isMember(0)
 {
 }
 

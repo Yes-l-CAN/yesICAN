@@ -58,6 +58,7 @@ public:
     int Nick(std::vector<std::string> argv, CanClient* targetClient);
     int User(std::vector<std::string> argv, CanClient* targetClient);
     void Ping(std::vector<std::string> argv, CanClient* targetClient);
+    void Quit(std::vector<std::string> argv, CanClient* targetClient);
     // void    Pong(std::vector<std::string> argv, CanClient* targetClient);
     void Join(std::vector<std::string> argv, CanClient* targetClient);
     void Part(std::vector<std::string> argv, CanClient* targetClient);

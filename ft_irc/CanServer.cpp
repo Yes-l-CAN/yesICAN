@@ -8,7 +8,6 @@ CanServer::CanServer() : socketFd(-1), maxFd(1000)
     FD_ZERO(&copyReads);
 
 	this->clientList = new std::map<int, CanClient *>;
-
 }
 
 CanServer::~CanServer()
@@ -74,7 +73,6 @@ void CanServer::s_On(){
 
 void CanServer::setServAddr()
 {
-	std::cout << "port ::: " << this->port << std::endl;
     this->addr.sin_family = AF_INET;
     this->addr.sin_addr.s_addr = htonl(INADDR_ANY);
     this->addr.sin_port = htons(this->port); 
@@ -116,7 +114,6 @@ void CanServer::s_Select()
 		this->copyReads = this->reads;
 
 		res = select(this->maxFd + 1, &(this->copyReads), NULL, NULL, &timeout);
-		std::cout << "res : " << res << "\n";
 		if(res < 0)
 			throw (CanException::selectException());
 		else if(res == 0)

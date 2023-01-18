@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <exception>
+#include <sys/ioctl.h>
 
 Operation::Operation()
 {
@@ -68,6 +69,7 @@ void Operation::Transmission()
             CanClient   *targetClient = findClient(this->setFd);
             std::vector<std::string> cmd = util.splitArr(this->buffer);
             CommandChecker(cmd, targetClient);
+            memset(this->buffer, 0, this->bufferSize);
         }
         catch (std::exception &e)
         {
@@ -172,13 +174,13 @@ int Operation::Nick(std::vector<std::string> argv, CanClient* targetClient)
         if(it2->second->getNickname() == *it)
             throw(CanException::existNickException());
     }
+    if(targetClient->getNickname().empty() != true)
+    {
+        reply = *(argv.begin()) + " " + *(argv.end() - 1) + "\n";
+        ioctl(targetClient->getSockFd(), TIOCFLUSH, 2);
+        send(targetClient->getSockFd(), &reply, sizeof(reply), 0);
+    }
     targetClient->setNickname(*it);
-    reply = *(argv.begin()) + *(argv.end() - 1);
-    std::cout << "reply:" << reply << std::endl;
-    std::cout << "begin:: " << *(argv.begin()) << std::endl;
-    std::cout << "end:: " << *(argv.end() - 1) << std::endl; 
-    std::cout << "hihihihihihi" << std::endl;
-    send(targetClient->getSockFd(), &reply, sizeof(reply), 0);
     if (targetClient->getMemberLevel() == USER_FIN)
         targetClient->setMemberLevel(CERTIFICATION_FIN);
     else
@@ -210,8 +212,15 @@ void Operation::Ping(std::vector<std::string> argv, CanClient* targetClient)
 {
     if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
         throw(CanException::NotCertificatedException());
+    std::string reply = *(argv.begin()) + " " + *(argv.end() - 1) + "\n";
+    ioctl(targetClient->getSockFd(), TIOCFLUSH, 2);
+    send(targetClient->getSockFd(), &reply, sizeof(reply), 0);
     // send 'pong'
-    std::cout << "ping Called!" << std::endl;
+}
+
+void Operation::Quit(std::vector<std::string> argv, CanClient* targetClient)
+{
+
 }
 
 // void    Pong(std::vector<std::string> argv, CanClient* targetClient);
