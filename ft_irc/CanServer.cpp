@@ -74,7 +74,7 @@ void CanServer::setServAddr()
 {
     this->addr.sin_family = AF_INET;
     this->addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    this->addr.sin_port = htons(MPORT); 
+    this->addr.sin_port = htons(this->inputPortNum); 
 }
 
 void CanServer::s_Socket(){
@@ -142,7 +142,7 @@ void CanServer::s_Accept()
 	std::cout << "Client list first: fd" ;
 	std::cout << clientList->begin()->first << std::endl;
 	std::cout << "client list second: client";
-	std::cout << clientList->begin()->second->getMemberLevel<< std::endl;
+	std::cout << clientList->begin()->second->getMemberLevel()<< std::endl;
 }
 
 // utils
@@ -151,6 +151,16 @@ void CanServer::setFdSet()
     fd_set* reads_addr = &this->reads;
     FD_ZERO(reads_addr);
     FD_SET(this->socketFd, reads_addr);
+}
+
+void CanServer::setInputPassword(char* str)
+{
+	this->inputPassword = str;
+}
+
+void CanServer::setInputPortNum(char* str)
+{
+	this->inputPortNum = atoi(str);
 }
 
 void CanServer::findFd(){
@@ -190,6 +200,16 @@ int CanServer::Transmission()
 }
 
 //getter
+int	CanServer::getInputPortNum() const
+{
+	return (this->inputPortNum);
+}
+
+std::string	CanServer::getInputPasswordNum() const
+{
+	return (this->inputPassword);
+}
+
 int	CanServer::getPort() const
 {
 	return (this->port);

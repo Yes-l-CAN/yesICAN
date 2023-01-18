@@ -23,14 +23,14 @@
 #include "CanServer.hpp"
 #include "CanException.hpp"
 
-#define MPORT 4244
-
 #define MAX_FD 1000
 #define MAXBUF 10
 
 class CanServer
 {
 private:
+    int inputPortNum;
+    std::string inputPassword;
     int port;
     std::string password;
 
@@ -73,8 +73,12 @@ public:
     void setServer(char *port, char *pw);
     void setServAddr();
     void setFdSet();
+    void setInputPortNum(char* str);
+    void setInputPassword(char* str);
 
     // getter
+    int getInputPortNum() const;
+    std::string getInputPasswordNum() const;
     int getPort() const;
     std::string getPassWord() const;
     int getSocketFd() const;

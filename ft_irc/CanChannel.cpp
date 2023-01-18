@@ -1,6 +1,6 @@
 #include "CanChannel.hpp"
 
-CanChannel::CanChannel()
+CanChannel::CanChannel() : channelName()
 {
 }
 
@@ -15,9 +15,7 @@ CanChannel::CanChannel(const CanChannel& ref)
 
 CanChannel& CanChannel::operator=(const CanChannel& ref)
 {
-    if (this != &ref)
-    {
-    }
+    if (this != &ref){}
     return (*this);
 }
 const std::map<int, CanClient*>& CanChannel::getClientList(void) const

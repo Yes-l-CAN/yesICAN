@@ -4,7 +4,7 @@
 #include <utility>
 
 CanClient::CanClient()
-: nickname(), username(), realname()
+: nickname(), username(), realname(), isMember(0)
 {
     memset(&this->addr, 0, sizeof(this->addr));
 }

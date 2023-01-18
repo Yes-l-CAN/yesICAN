@@ -10,29 +10,20 @@ std::vector<std::string> Utility::splitArr(char *s)
     size_t start = 0;
     
     if(str.find(" ") == std::string::npos)
-    {
         throw(commandArgvException());
-    }
-    
     while ((position = str.find(" ", position)) != std::string::npos)
     {
-        // std::cout << "start : " << start << std::endl;
-        // std::cout << "pos : " << position << std::endl;
         std::string temp = "";
         for (size_t i = start; i < position; i++)
-        {
             temp += str[i];
-        }
         v.push_back(temp);
         position += 1;
         start = position;
     }
-    if(position == std::string::npos)
+    if (position == std::string::npos)
         position = str.length();
     for (size_t i = start; i < position; i++)
-    { 
         temp += str[i];
-    }
     v.push_back(temp);
 
     return (v);

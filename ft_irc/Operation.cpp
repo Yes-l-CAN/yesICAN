@@ -22,7 +22,6 @@ Operation &Operation::operator=(const Operation &obj)
 {
     if (this != &obj)
     {
-
         this->setFd = obj.setFd;
         this->result = obj.result;
         for (int i = 0; i < bufferSize; i++)
@@ -44,8 +43,11 @@ Operation::~Operation()
     delete server;
 }
 
-void Operation::Transmission()
+void Operation::Transmission(char* argv1, char* argv2)
 {
+    server->setInputPortNum(argv1);
+    server->setInputPassword(argv2);
+
     server->s_Select();
     this->setFd = server->Transmission(); // return i(fd)
     if (this->setFd == server->getSocketFd())
@@ -146,15 +148,21 @@ void Operation::Pass(std::vector<std::string> argv, CanClient* targetClient)
     // std::cout << "Pass Called!" << std::endl;
     std::vector<std::string>::iterator it;
     it = argv.end() - 1;
-    if (*it == this->server->getPassWord())
+   
+    if (targetClient->getMemberLevel() == USER_FIN 
+        || targetClient->getMemberLevel() == NICK_FIN
+        || targetClient->getMemberLevel() == CERTIFICATION_FIN)
+        return ;
+    else if (server->getInputPasswordNum() == *it)
         targetClient->setMemberLevel(PASS_FIN);
     else
-        throw(CanException::pwIncorrectException());
+        throw(CanException::PasswordNotSameException());
+
 }
 
 int Operation::Nick(std::vector<std::string> argv, CanClient* targetClient)
 {
-    std::cout << "Nick called" << std::endl;
+    //std::cout << "Nick called" << std::endl;
     std::string replyStr;
     // std::cout << "Nick Called!" << std::endl;
     std::vector<std::string>::iterator it;
@@ -208,25 +216,35 @@ void Operation::Ping(std::vector<std::string> argv, CanClient* targetClient)
 // void    Pong(std::vector<std::string> argv, CanClient* targetClient);
 void Operation::Join(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "join Called!" << std::endl;
 }
 
 void Operation::Part(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "part Called!" << std::endl;
 }
 
 void Operation::Kick(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "kick Called!" << std::endl;
 }
 
 void Operation::Notice(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "notice Called!" << std::endl;
 }
 
 void Operation::PrivateMSG(std::vector<std::string> argv, CanClient* targetClient)
 {
+    if (targetClient->getMemberLevel() != CERTIFICATION_FIN)
+        throw(CanException::NotCertificatedException());
     std::cout << "privatemsg Called!" << std::endl;
 }

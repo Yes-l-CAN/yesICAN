@@ -48,6 +48,11 @@ const char *CanException::pwIncorrectException::what() const throw()
     return ("Error! Password incorrect.");
 }
 
+const char *CanException::PasswordNotSameException::what() const throw()
+{
+    return ("Error! Password is different. Try another one!");
+}
+
 const char *CanException::existNickException::what() const throw()
 {
     return ("Error! There is the same Nickname in this server. Try another one!");

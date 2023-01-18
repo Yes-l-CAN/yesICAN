@@ -40,7 +40,7 @@ public:
     ~Operation();
 
     // socket transmission
-    void Transmission();
+    void Transmission(char* str1, char* str2);
 
     // find sent Client
     CanClient   *findClient(int fd);
