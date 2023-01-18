@@ -1,9 +1,9 @@
 #include "Operation.hpp"
 #include "Utility.hpp"
-#include <iostream>
-#include <vector>
-#include <string>
 #include <exception>
+#include <iostream>
+#include <string>
+#include <vector>
 
 Operation::Operation()
 {
@@ -12,13 +12,21 @@ Operation::Operation()
     this->server->s_On();
 }
 
+<<<<<<< HEAD
 Operation::Operation(const Operation &obj)
+=======
+Operation::Operation(const Operation& obj)
+>>>>>>> 4f0a9949f75b0494eb182f5d2f3aa773d724c115
 {
     *this = obj;
 }
 
 // deep copy
+<<<<<<< HEAD
 Operation &Operation::operator=(const Operation &obj)
+=======
+Operation& Operation::operator=(const Operation& obj)
+>>>>>>> 4f0a9949f75b0494eb182f5d2f3aa773d724c115
 {
     if (this != &obj)
     {
@@ -33,7 +41,11 @@ Operation &Operation::operator=(const Operation &obj)
         // deep copy
         Operation replica(obj);
 
+<<<<<<< HEAD
         CanServer *dummy = this->server;
+=======
+        CanServer* dummy = this->server;
+>>>>>>> 4f0a9949f75b0494eb182f5d2f3aa773d724c115
         this->server = replica.server;
     }
     return *this;
@@ -57,11 +69,19 @@ void Operation::Transmission()
         try
         {
             cRecv(this->setFd);
+<<<<<<< HEAD
             CanClient   *targetClient = findClient(this->setFd);
             std::vector<std::string> cmd = util.splitArr(this->buffer);
             CommandChecker(cmd, targetClient);
         }
         catch (std::exception &e)
+=======
+            std::vector<std::string> cmd = util.splitArr(this->buffer);
+
+            CommandChecker(cmd);
+        }
+        catch (std::exception& e)
+>>>>>>> 4f0a9949f75b0494eb182f5d2f3aa773d724c115
         {
             std::cout << e.what() << std::endl;
         }
@@ -77,12 +97,13 @@ CanClient   *Operation::findClient(int fd)
 
 void Operation::CommandChecker(std::vector<std::string> argv, CanClient* targetClient)
 {
-    std::string cmd[] = {"PASS", "NICK", "USER", "PING", "JOIN", "PART", "KICK", "NOTICE", "PRIVMSG"};
+    std::string cmd[] = {"PASS", "NICK", "USER", "PING", "JOIN", "PART", "KICK", "NOTICE", "PRIVMSG", "QUIT"};
 
     for (int i = 0; i < sizeof(cmd) / sizeof(std::string); i++)
     {
         if (argv.front() == cmd[i])
         {
+<<<<<<< HEAD
             
             switch (i)
             {
@@ -112,6 +133,39 @@ void Operation::CommandChecker(std::vector<std::string> argv, CanClient* targetC
                 return;
             case 8:
                 this->PrivateMSG(argv, targetClient);
+=======
+            switch (i)
+            {
+            case 0:
+                this->Pass(argv);
+                return;
+            case 1:
+                this->Nick(argv);
+                return;
+            case 2:
+                this->User(argv);
+                return;
+            case 3:
+                this->Ping(argv);
+                return;
+            case 4:
+                this->Join(argv);
+                return;
+            case 5:
+                this->Part(argv);
+                return;
+            case 6:
+                this->Kick(argv);
+                return;
+            case 7:
+                this->Notice(argv);
+                return;
+            case 8:
+                this->PrivateMSG(argv);
+                return;
+            case 9:
+                this->Quit(argv);
+>>>>>>> 4f0a9949f75b0494eb182f5d2f3aa773d724c115
                 return;
             default:;
                 //  인자가 더해져 들어옴! (자동)
@@ -122,6 +176,79 @@ void Operation::CommandChecker(std::vector<std::string> argv, CanClient* targetC
 }
 
 void Operation::cRecv(int fd)
+<<<<<<< HEAD
+=======
+{
+    int ret = recv(fd, buffer, bufferSize, 0);
+    if (ret < 0)
+        throw(recvException());
+    if (ret == 0)
+        throw(recvException()); // TODO: make exception more specifically.
+}
+
+void Operation::Client2ServSend(int fd)
+{
+    // need to think about it more ...
+}
+
+void Operation::Serv2ClientSend(int fd)
+{
+    // need to think about it more ...
+}
+
+void Operation::Pass(std::vector<std::string> argv)
+{
+    std::cout << "PAss Called!" << std::endl;
+}
+
+int Operation::Nick(std::vector<std::string> argv)
+{
+    std::cout << "Nick Called!" << std::endl;
+}
+
+int Operation::User(std::vector<std::string> argv)
+{
+    std::cout << "User Called!" << std::endl;
+}
+
+void Operation::Ping(std::vector<std::string> argv)
+{
+    std::cout << "ping Called!" << std::endl;
+}
+
+// void    Pong(std::vector<std::string> argv);
+void Operation::Join(std::vector<std::string> argv)
+{
+    std::cout << "join Called!" << std::endl;
+}
+
+void Operation::Part(std::vector<std::string> argv)
+{
+    std::cout << "part Called!" << std::endl;
+}
+
+void Operation::Kick(std::vector<std::string> argv)
+{
+    std::cout << "kick Called!" << std::endl;
+}
+
+void Operation::Notice(std::vector<std::string> argv)
+{
+    std::cout << "notice Called!" << std::endl;
+}
+
+void Operation::PrivateMSG(std::vector<std::string> argv)
+{
+    std::cout << "privatemsg Called!" << std::endl;
+}
+
+void Operation::Quit(std::vector<std::string> argv)
+{
+    std::cout << "quit Called!" << std::endl;
+}
+
+const char* Operation::recvException::what() const throw()
+>>>>>>> 4f0a9949f75b0494eb182f5d2f3aa773d724c115
 {
     int ret = recv(fd, buffer, bufferSize, 0);
     if (ret < 0)

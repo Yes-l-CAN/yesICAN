@@ -52,6 +52,20 @@ public:
     void Client2ServSend(int fd);
     void Serv2ClientSend(int fd);
 
+<<<<<<< HEAD
+=======
+    void Pass(std::vector<std::string> argv);
+    int Nick(std::vector<std::string> argv);
+    int User(std::vector<std::string> argv);
+    void Ping(std::vector<std::string> argv);
+    // void    Pong(std::vector<std::string> argv);
+    void Join(std::vector<std::string> argv);
+    void Part(std::vector<std::string> argv);
+    void Kick(std::vector<std::string> argv);
+    void Notice(std::vector<std::string> argv);
+    void PrivateMSG(std::vector<std::string> argv);
+    void Quit(std::vector<std::string> argv);
+>>>>>>> 4f0a9949f75b0494eb182f5d2f3aa773d724c115
 
     void Pass(std::vector<std::string> argv, CanClient* targetClient);
     int Nick(std::vector<std::string> argv, CanClient* targetClient);
