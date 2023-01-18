@@ -74,9 +74,10 @@ void CanServer::s_On(){
 
 void CanServer::setServAddr()
 {
+	std::cout << "port ::: " << this->port << std::endl;
     this->addr.sin_family = AF_INET;
     this->addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    this->addr.sin_port = htons(MPORT); 
+    this->addr.sin_port = htons(this->port); 
 }
 
 void CanServer::s_Socket(){
@@ -139,7 +140,7 @@ void CanServer::s_Accept()
 	}
 	FD_SET(clientSockFd, &reads);
 
-	CanClient *temp = new CanClient(clientAddr);
+	CanClient *temp = new CanClient(clientAddr, clientSockFd);
 	clientList->insert(std::make_pair(clientSockFd, temp));
 }
 

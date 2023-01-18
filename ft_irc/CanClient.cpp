@@ -7,6 +7,10 @@ CanClient::CanClient()
 {
 }
 
+CanClient::CanClient(int fd): socketFd(fd)
+{
+}
+
 CanClient::CanClient(const CanClient& ref)
 {
     *this = ref;
@@ -26,6 +30,10 @@ CanClient::~CanClient()
 }
 
 CanClient::CanClient(const struct sockaddr_in addr) : addr(addr)
+{
+}
+
+CanClient::CanClient(const struct sockaddr_in addr, const int fd) : addr(addr), socketFd(fd)
 {
 }
 
@@ -67,6 +75,11 @@ void CanClient::setRealname(const std::string name)
 std::string CanClient::getRealname(void) const
 {
     return (this->username);
+}
+
+int CanClient::getSockFd(void) const 
+{
+    return (this->socketFd);
 }
 
 void CanClient::addChannelElement(std::string key, CanChannel* pNewChannel)

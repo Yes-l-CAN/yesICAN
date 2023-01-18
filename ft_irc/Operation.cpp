@@ -7,10 +7,18 @@
 
 Operation::Operation()
 {
-    std::cout << "constructor" << std::endl;
     this->server = new CanServer();
     this->server->s_On();
 }
+
+
+Operation::Operation(char *s1, char *s2)
+{
+    this->server = new CanServer();
+    this->server->setServer(s1, s2);
+    this->server->s_On();
+}
+
 
 Operation::Operation(const Operation &obj)
 {
@@ -154,33 +162,34 @@ void Operation::Pass(std::vector<std::string> argv, CanClient* targetClient)
 
 int Operation::Nick(std::vector<std::string> argv, CanClient* targetClient)
 {
-    std::cout << "Nick called" << std::endl;
-    std::string replyStr;
-    // std::cout << "Nick Called!" << std::endl;
+    std::string reply;
+    if(targetClient->getMemberLevel() < PASS_FIN)
+        throw(CanException::NotCertificatedException());
     std::vector<std::string>::iterator it;
     it = argv.end() - 1;
-    std::map<int, CanClient*>::iterator it3 = server->getClientList()->begin();
-    // std::cout << "it : " << *it << std::endl;
-    std::cout << "it2 : " << it3->first << std::endl;
     for(std::map<int, CanClient*>::iterator it2 = server->getClientList()->begin(); it2 != server->getClientList()->end(); ++it2)
     {
         if(it2->second->getNickname() == *it)
             throw(CanException::existNickException());
     }
     targetClient->setNickname(*it);
+    reply = *(argv.begin()) + *(argv.end() - 1);
+    std::cout << "reply:" << reply << std::endl;
+    std::cout << "begin:: " << *(argv.begin()) << std::endl;
+    std::cout << "end:: " << *(argv.end() - 1) << std::endl; 
+    std::cout << "hihihihihihi" << std::endl;
+    send(targetClient->getSockFd(), &reply, sizeof(reply), 0);
     if (targetClient->getMemberLevel() == USER_FIN)
         targetClient->setMemberLevel(CERTIFICATION_FIN);
     else
         targetClient->setMemberLevel(NICK_FIN);
-    //need to replace -> server2Clientsend()
-    replyStr = *argv.begin() + *(argv.end() - 1);
-    std::cout << "reply:: " << replyStr << std::endl;
     return (0);
 }
 
 int Operation::User(std::vector<std::string> argv, CanClient* targetClient)
 {
-    //std::cout << "User Called!" << std::endl;
+    if(targetClient->getMemberLevel() < PASS_FIN)
+        throw(CanException::NotCertificatedException());
     std::vector<std::string>::iterator it;
     it = argv.end() - 1;
     std::map<int, CanClient*>::iterator it2;

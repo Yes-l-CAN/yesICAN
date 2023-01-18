@@ -14,6 +14,7 @@ class CanChannel;
 class CanClient
 {
 private:
+    int         socketFd;
     std::string nickname;
     std::string username;
     std::string realname;
@@ -27,8 +28,10 @@ private:
 public:
     
     CanClient();
+    CanClient(int fd);
     CanClient(const CanClient& ref);
     CanClient(const struct sockaddr_in addr);
+    CanClient(const struct sockaddr_in addr, const int fd);
     CanClient& operator=(const CanClient& ref);
     ~CanClient();
 
@@ -42,6 +45,7 @@ public:
     std::string getNickname(void) const;
     std::string getUsername(void) const;
     std::string getRealname(void) const;
+    int         getSockFd(void) const;
     int         getMemberLevel(void) const;
 
     void addChannelElement(std::string key, CanChannel* pNewChannel);   // join channel

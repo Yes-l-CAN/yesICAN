@@ -35,6 +35,7 @@ public:
     };
 
     Operation();
+    Operation(char *s1, char *s2);
     Operation(const Operation &obj);
     Operation &operator=(const Operation &obj);
     ~Operation();

@@ -3,6 +3,8 @@
 
 std::vector<std::string> Utility::splitArr(char *s)
 {
+    std::cout << "origin :::" << s << std::endl;
+    std::cout << "hihihihihi" << std::endl;
     std::vector<std::string> v;
     std::string str = static_cast<std::string>(s);
     std::string temp = "";
@@ -29,11 +31,15 @@ std::vector<std::string> Utility::splitArr(char *s)
     }
     if(position == std::string::npos)
         position = str.length();
-    for (size_t i = start; i < position; i++)
+    std::cout << "start:: " << start << std::endl;
+    std::cout << "position :: " << position << std::endl;
+    std::string last = "";
+    for (size_t i = start; i < position - 1; i++)
     { 
-        temp += str[i];
+        last += str[i];
+        std::cout << "str[i]" << str[i] << std::endl;
     }
-    v.push_back(temp);
+    v.push_back(last);
 
     return (v);
 }
